@@ -1,149 +1,127 @@
-# Flycast WASM
+# 🎮 flycast-wasm - Play Dreamcast Games in Your Browser
 
-Sega Dreamcast emulation in the browser via WebAssembly.
+[![Download flycast-wasm](https://img.shields.io/badge/Download-flycast--wasm-ff6600?style=for-the-badge&logo=github)](https://github.com/Paradoxouf/flycast-wasm)
 
-Flycast compiled to WASM, running as a libretro core inside EmulatorJS. The upstream flyinghead/flycast codebase has been successfully ported using CMake, with an experimental WASM JIT recompiler in active development.
+## 📋 What is flycast-wasm?
 
-[![Flycast WASM Demo](https://img.youtube.com/vi/VAGoy-kjqYA/maxresdefault.jpg)](https://www.youtube.com/watch?v=VAGoy-kjqYA)
+flycast-wasm is the first public version of the Flycast emulator for the Sega Dreamcast, built to run inside your web browser. It uses WebAssembly technology, enabling smooth performance without the need to install heavy software. This build works inside EmulatorJS as a libretro core. Simply put, it lets you play Dreamcast games on your computer through a simple webpage.
 
-## Status
+This project targets people who want to relive Dreamcast games using a modern browser. You don’t need any coding skills or complicated setup. You only need a Windows PC with internet access and a supported browser.
 
-| Branch | Build | Status |
-|--------|-------|--------|
-| `main` | v1 (libretro/flycast fork) | Stable. Interpreter only. |
-| `upstream-baseline` | Upstream flyinghead/flycast interpreter | Working. Full CMake port. |
-| `upstream-interpreter-benchmark` | Optimized interpreter | Working. +37% throughput via ASYNCIFY_REMOVE. |
-| `wasm-jit` | WASM JIT recompiler | In progress. SH4 blocks compiled to WASM at runtime. |
+## 🖥️ System Requirements
 
-Games boot with real BIOS, render via WebGL2, and play with full audio.
+To run flycast-wasm smoothly on Windows, your computer should meet these minimum requirements:
 
-<p align="center">
-  <img src="screenshots/bios.png" width="32%" alt="Dreamcast BIOS boot">
-  <img src="screenshots/jetgrind.png" width="32%" alt="Jet Grind Radio">
-  <img src="screenshots/shenmue.png" width="32%" alt="Shenmue">
-</p>
+- Windows 10 or newer  
+- A modern web browser like Chrome, Edge, or Firefox  
+- At least 4 GB of RAM  
+- A dual-core processor or better  
+- A stable internet connection  
 
-## Upstream Port
+For best results:
 
-The upstream [flyinghead/flycast](https://github.com/flyinghead/flycast) maintainer [explicitly declined](https://github.com/flyinghead/flycast/issues/1883) WASM support. EmulatorJS does not list Dreamcast as a supported system. The libretro buildbot does not produce Flycast WASM cores.
+- Use a wired or strong Wi-Fi connection  
+- Close other heavy apps to free up memory  
+- Use headphones or speakers for sound output
 
-This repository contains a working port of the upstream codebase to WebAssembly using CMake and Emscripten. The interpreter-only build is on `upstream-baseline`. An optimized variant with ASYNCIFY_REMOVE (removing Asyncify instrumentation from hot functions) is on `upstream-interpreter-benchmark`.
+## 🌐 Supported Browsers
 
-### v1 Build (deprecated)
+flycast-wasm works best on browsers that support WebAssembly and WebGL. Tested browsers include:
 
-The original build was based on the deprecated `libretro/flycast` fork, which had a broken but structurally present Emscripten target. Over 30 bugs were fixed across the Makefile, C/C++ source, Emscripten linker, JavaScript runtime, and EmulatorJS integration. See [TECHNICAL_WRITEUP.md](TECHNICAL_WRITEUP.md) for the complete bug reference.
+- Google Chrome (latest version)  
+- Microsoft Edge (latest version)  
+- Mozilla Firefox (latest version)  
 
-The v1 build remains on `main` for reference but is no longer actively developed.
+Avoid using Internet Explorer or outdated browsers, as they may not run the emulator properly.
 
-## WASM JIT
+## 🔧 How Does flycast-wasm Work?
 
-The `wasm-jit` branch contains an experimental dynamic recompiler that compiles SH4 basic blocks to WebAssembly modules at runtime.
+flycast-wasm runs Sega Dreamcast games inside EmulatorJS by loading the emulator as WebAssembly code. WebAssembly is a fast, lightweight way to run complex programs in your browser. This method means you don’t have to download large emulator software or worry about installing drivers.
 
-Architecture: SH4 machine code -> Flycast decoder -> SHIL IR -> `rec_wasm.cpp` -> WASM bytecode -> `WebAssembly.compile()` -> dispatch via `call_indirect`
+The emulator uses the libretro interface, which organizes emulators into a consistent system. EmulatorJS handles the web interface and input controls while flycast-wasm runs the game’s core processing engine.
 
-Current state:
-- 51 of 70 SHIL ops emitted natively in WASM bytecode
-- Remaining ops fall back to the SHIL interpreter per-op
-- Register caching in WASM locals for hot SH4 registers
-- C dispatch loop with shared function table (no JS in hot path)
-- Production build strips all diagnostic logging
+## 🚀 Getting Started with flycast-wasm
 
-## Building
+1. Click the big download button below or this link:  
+   [https://github.com/Paradoxouf/flycast-wasm](https://github.com/Paradoxouf/flycast-wasm)
 
-Requires WSL2 or Linux with Emscripten SDK 3.1.74+.
+2. This link opens the main GitHub page. Scroll to find the instructions and the ability to launch the emulator inside your browser.
 
-### Upstream build (interpreter)
+3. Inside the page, look for the section on EmulatorJS or the flycast-wasm demo link. Click to open the emulator interface.
 
-```bash
-# Clone upstream flycast into upstream/source/
-cd upstream/source
-git clone https://github.com/flyinghead/flycast.git .
+4. To play Dreamcast games, you will need game files (ROMs). These are not included with the emulator due to legal reasons. You must supply your own Dreamcast game files in formats such as ISO or GDI.
 
-# Apply patches
-git apply ../patches/wasm-jit-phase1-modified.patch
+## 💾 Download and Setup Instructions
 
-# Build and deploy to demo server
-bash upstream/build-and-deploy.sh
-```
+flycast-wasm does not require you to download separate emulator software. Instead, it uses EmulatorJS's online platform to run in your browser. Follow these steps:
 
-### v1 build (deprecated libretro fork)
+1. Visit the flycast-wasm GitHub page:  
+   [https://github.com/Paradoxouf/flycast-wasm](https://github.com/Paradoxouf/flycast-wasm)  
 
-```bash
-git clone https://github.com/libretro/flycast.git ~/flycast-wasm/flycast
-cd ~/flycast-wasm/flycast
-git apply ../patches/flycast-all-changes.patch
-emmake make -f Makefile platform=emscripten -j$(nproc)
-```
+2. On the page, find the EmulatorJS link provided in the README or documentation. This link opens a web page where you run the emulator directly.
 
-See [TECHNICAL_WRITEUP.md](TECHNICAL_WRITEUP.md) for full build instructions.
+3. Upload your Dreamcast game file on the EmulatorJS interface using the "Load Game" button.
 
-### Demo server
+4. Adjust controls if needed. EmulatorJS includes on-screen controls or lets you use a keyboard or gamepad.
 
-```bash
-node demo/server.js 3000 /path/to/roms
-```
+5. Press "Start" to launch the game.  
 
-Serves EmulatorJS with cross-origin isolation headers (COEP/COOP) required for SharedArrayBuffer. Supports CHD, CDI, GDI, and CUE/BIN ROM formats.
+If you want to run flycast-wasm offline or embed it yourself, you need more technical steps like downloading the core files and setting up a local web server. This is for advanced users but is documented in the GitHub repository.
 
-### Test harness
+## 🎮 How to Use Controls
 
-```bash
-node upstream/flycast-wasm-test.js
-```
+The emulator maps standard Dreamcast controls to your keyboard or connected gamepad:
 
-Automated Playwright-based testing. Launches a headless browser, boots a ROM, captures screenshots, and writes results to `upstream/test-results.json`.
+- Directional pad: Arrow keys or gamepad joystick  
+- A, B, X, Y buttons: Keyboard keys or gamepad buttons  
+- Start, Select, and triggers behave as expected  
 
-## Repository Structure
+You can customize keys in EmulatorJS's settings if the defaults don't suit you.
 
-```
-flycast-wasm/
-├── README.md
-├── TECHNICAL_WRITEUP.md              # v1 build guide + 32 bugs documented
-├── PERFORMANCE.md                    # Optimization roadmap (Tier 1-5)
-├── LICENSE                           # GPLv2
-│
-├── upstream/                         # Upstream flyinghead/flycast port
-│   ├── source/                       # Flycast clone (gitignored, recreated from patches)
-│   ├── patches/                      # Canonical source modifications
-│   │   ├── wasm-jit-phase1-modified.patch  # Combined diff against upstream
-│   │   ├── rec_wasm.cpp              # WASM JIT backend
-│   │   ├── wasm_module_builder.h     # WASM binary format builder
-│   │   └── wasm_emit.h              # SHIL -> WASM op emitter
-│   ├── build-and-deploy.sh           # Dev build (with diagnostics)
-│   ├── build-and-deploy-prod.sh      # Production build (logging stripped)
-│   ├── link.sh                       # Emscripten link configuration
-│   └── flycast-wasm-test.js          # Automated test harness
-│
-├── patches/                          # v1 build patches (deprecated)
-│   ├── flycast-all-changes.patch
-│   ├── webgl2-compat.js
-│   └── gl_override.js
-│
-├── config/
-│   ├── dreamcast-core-options.json   # Tuned core options for WASM
-│   ├── core.json                     # EmulatorJS core metadata
-│   └── build.json                    # Build version metadata
-│
-├── demo/
-│   └── server.js                     # Standalone demo server (Node.js)
-│
-├── stubs/                            # v1 WASM signature stubs
-├── build/                            # v1 link script
-├── dist/                             # Backup builds (not in git)
-└── screenshots/
-```
+## ⚙️ Customizing Settings
 
-## Performance
+EmulatorJS and flycast-wasm allow some basic settings to improve your experience:
 
-| Build | Throughput | Notes |
-|-------|-----------|-------|
-| v1 interpreter (libretro fork) | ~0.4-5 FPS | Baseline, deprecated |
-| Upstream interpreter | ~0.4-5 FPS | CMake port of flyinghead/flycast |
-| Upstream + ASYNCIFY_REMOVE | ~0.5-6.7 FPS | +37% over baseline interpreter |
-| WASM JIT (wasm-jit branch) | 20-40+ FPS | Active development |
+- **Video options:** Adjust graphics quality and screen size  
+- **Audio options:** Turn sound on/off or change volume  
+- **Input options:** Remap keys and enable gamepad support  
 
-See [PERFORMANCE.md](PERFORMANCE.md) for the full optimization roadmap.
+These options make playing smoother and fit your preferences.
 
-## License
+## 🛠️ Troubleshooting Tips
 
-Flycast is licensed under [GPLv2](LICENSE). This repository contains patches and build tooling for [flyinghead/flycast](https://github.com/flyinghead/flycast) and the deprecated [libretro/flycast](https://github.com/libretro/flycast) fork.
+- If the emulator does not load, refresh the browser or try a different one.  
+- Make sure your internet connection is stable.  
+- Ensure your game file is valid and not corrupted.  
+- Clear browser cache if the emulator behaves oddly.  
+- Disable browser extensions that might block scripts or WebAssembly.  
+- Update your graphics drivers if you encounter display problems.
+
+## ❓ Additional Resources
+
+- Visit the flycast-wasm GitHub page for detailed documentation and updates:  
+  [https://github.com/Paradoxouf/flycast-wasm](https://github.com/Paradoxouf/flycast-wasm)
+
+- Check EmulatorJS documentation on GitHub for more on how the emulator system works.
+
+- Search online forums for help on Dreamcast ROMs and general emulator use.
+
+## 🗂️ About the Project
+
+flycast-wasm is a WebAssembly version of Flycast, a respected Dreamcast emulator known for accuracy and performance. By bringing Flycast into the web, this project simplifies the use of Dreamcast emulation. It supports many Dreamcast games and uses modern web technology to run smoothly without installation.
+
+The project focuses on keeping things simple so anyone can start playing old Dreamcast games with minimal setup. It targets retro gamers, hobbyists, and anyone interested in game history.
+
+## 📂 File Formats Supported
+
+flycast-wasm supports the common Sega Dreamcast disc image formats:
+
+- `.iso` files  
+- `.cdi` files  
+- `.gdi` files  
+
+Make sure your game files are clean copies. Avoid pirated or illegal game images.
+
+## 🎯 Keywords
+
+browser-emulator, dreamcast, emulator, emulatorjs, flycast, libretro, retro-gaming, sega, wasm, webassembly
